@@ -1,0 +1,36 @@
+name: Build Python on Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2025
+
+    steps:
+      - name: Checkout CPython
+        uses: actions/checkout@v5
+        with:
+          repository: python/cpython
+          ref: v3.12.14
+          fetch-depth: 1
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build Python
+        shell: cmd
+        run: |
+          cd PCbuild
+          build.bat -p x64 -c Release
+
+      - name: Check Python
+        shell: cmd
+        run: |
+          PCbuild\amd64\python.exe --version
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-3.12.14-windows-x64
+          path: PCbuild/amd64/
