@@ -1,4 +1,4 @@
-name: Build Python on Windows
+name: Build Python 3.12.14
 
 on:
   push:
@@ -15,27 +15,29 @@ jobs:
           repository: python/cpython
           ref: v3.12.14
           fetch-depth: 1
-      - name: Check CPython version
-        shell: cmd
-        run: |
-            git describe --tags --always
-            git log -1 --oneline
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
+
+      - name: Check CPython version
+        shell: cmd
+        run: |
+          git describe --tags --always
+          git log -1 --oneline
 
       - name: Build Python
         shell: cmd
         run: |
           cd PCbuild
-          build.bat -p x64 -c Release
+          build.bat -p x64 -c Release "/p:PlatformToolset=v145"
 
-      - name: Check Python
+      - name: Test Python
         shell: cmd
         run: |
           PCbuild\amd64\python.exe --version
+          PCbuild\amd64\python.exe -c "import sys; print(sys.executable); print(sys.version)"
 
-      - name: Upload
+      - name: Upload Python
         uses: actions/upload-artifact@v4
         with:
           name: python-3.12.14-windows-x64
