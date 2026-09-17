@@ -34,9 +34,8 @@ jobs:
       - name: Test Python
         shell: cmd
         run: |
-          PCbuild\amd64\python.exe --version
-          PCbuild\amd64\python.exe -c "import sys; print(sys.executable); print(sys.version)"
-
+          PCbuild\amd64\python_d.exe --version
+          dir PCbuild\amd64\python312_d.*
       - name: Upload Python
         uses: actions/upload-artifact@v4
         with:
