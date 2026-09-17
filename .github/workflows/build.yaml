@@ -1,6 +1,7 @@
 name: Build Python on Windows
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -14,6 +15,11 @@ jobs:
           repository: python/cpython
           ref: v3.12.14
           fetch-depth: 1
+      - name: Check CPython version
+        shell: cmd
+        run: |
+            git describe --tags --always
+            git log -1 --oneline
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
