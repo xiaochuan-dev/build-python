@@ -29,7 +29,7 @@ jobs:
         shell: cmd
         run: |
           cd PCbuild
-          build.bat -p x64 -c Release "/p:PlatformToolset=v145"
+          build.bat -p x64 -c Debug "/p:PlatformToolset=v145"
 
       - name: Test Python
         shell: cmd
